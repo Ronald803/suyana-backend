@@ -1,7 +1,6 @@
+const appointment = require('../components/appointment/network')
 const routes = function(server){
-    server.use('/api/medical-appointment',()=>{
-        console.log('esta es una petición a sesión médica')
-    });
+    server.use('/api/appointment',appointment);
     server.use('/api/patient',()=>{
         console.log('esta es una petición a información de paciente')
     });
