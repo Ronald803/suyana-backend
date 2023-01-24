@@ -14,6 +14,16 @@ function getAppointments(filter){
         resolve(store.list(filter));
     })
 }
+function updateAppointment(id,body){
+    return new Promise( async(resolve,reject)=>{
+        if(!id || !body){
+            reject ("Incomplete data");
+            return false
+        }
+        const updated = await store.update(id, body)
+        resolve(updated)
+    } )
+}
 module.exports = {
-    addAppointment, getAppointments
+    addAppointment, getAppointments, updateAppointment
 }

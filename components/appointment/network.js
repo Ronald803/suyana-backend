@@ -22,8 +22,14 @@ router.post('/',(req,res)=>{
          console.error(e);
      })
 })
-router.put('/',(req,res)=>{
-    res.send('petición put a cita médica')
+router.put('/:id',(req,res)=>{
+    controller.updateAppointment(req.params.id,req.body)
+        .then( (updatedAppointment)=>{
+            res.send(updatedAppointment)
+        } )
+        .catch(e=>{
+            console.error(e)
+        })
 })
 router.delete('/',(req,res)=>{
     res.send('petición delete a cita médica')

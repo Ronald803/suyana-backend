@@ -8,4 +8,12 @@ async function list(filter){
     const appointments = await Model.find(filter);
     return appointments
 }
-module.exports = {add,list}
+async function update(id,body){
+    console.log(body)
+    const foundAppointment = await Model.findOne({_id:id})
+    foundAppointment.schedule = body.schedule;
+    foundAppointment.characteristic = "modificado";
+    const updatedAppointment = await foundAppointment.save();
+    return updatedAppointment;
+}
+module.exports = {add,list,update}
