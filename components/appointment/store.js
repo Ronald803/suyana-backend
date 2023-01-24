@@ -4,4 +4,8 @@ function add (appointment){
     const myAppointment = new Model(appointment)
     myAppointment.save();
 }
-module.exports = {add}
+async function list(filter){
+    const appointments = await Model.find(filter);
+    return appointments
+}
+module.exports = {add,list}

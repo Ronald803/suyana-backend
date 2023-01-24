@@ -3,7 +3,14 @@ const router = express.Router();
 const controller = require('./controller')
 
 router.get('/',(req,res)=>{
-    res.send('petición get a cita médica')
+    console.log(req.query)
+    controller.getAppointments(req.query)
+    .then( (appointments)=>{
+        res.send(appointments)
+    } )
+    .catch( e=>{
+        console.error(e)
+    })
 })
 router.post('/',(req,res)=>{
     const {patient,date,schedule,specialty,doctor} = req.body

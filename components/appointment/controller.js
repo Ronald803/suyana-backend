@@ -9,6 +9,11 @@ function addAppointment(patient,date,schedule,specialty,doctor){
         resolve(appointment);
     } )
 }
+function getAppointments(filter){
+    return new Promise((resolve,reject)=>{
+        resolve(store.list(filter));
+    })
+}
 module.exports = {
-    addAppointment
+    addAppointment, getAppointments
 }
