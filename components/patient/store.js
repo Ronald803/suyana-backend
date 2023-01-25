@@ -10,7 +10,7 @@ async function list(filter){
     return patients
 }
 async function update(id,body){
-    const foundPatient = await Model.findOne({_id:id})
+    const foundPatient = await Model.findById(id)
     foundPatient.age = body.age;
     foundPatient.diagnosis = body.diagnosis;
     foundPatient.evaluation.push(body.evaluation);
