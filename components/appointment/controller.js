@@ -24,6 +24,16 @@ function updateAppointment(id,body){
         resolve(updated)
     } )
 }
+function deleteAppointment(id){
+    return new Promise( async (resolve,reject)=>{
+        if(!id){
+            reject("Id inválido")
+            return false
+        }
+        const deleted = await store.remove(id)
+        resolve(deleted)
+    } )
+}
 module.exports = {
-    addAppointment, getAppointments, updateAppointment
+    addAppointment, getAppointments, updateAppointment, deleteAppointment
 }

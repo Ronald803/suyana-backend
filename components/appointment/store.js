@@ -16,4 +16,10 @@ async function update(id,body){
     const updatedAppointment = await foundAppointment.save();
     return updatedAppointment;
 }
-module.exports = {add,list,update}
+async function remove(id){
+    const foundAppointment = await Model.findOne(({_id:id}))
+    foundAppointment.characteristic = "eliminado";
+    const deletedAppointment = await foundAppointment.save();
+    return deletedAppointment;
+}
+module.exports = {add,list,update,remove}

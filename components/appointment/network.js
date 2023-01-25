@@ -1,38 +1,47 @@
+//const { response } = require('express');
 const express = require('express');
 const router = express.Router();
 const controller = require('./controller')
+const response = require('../../network/response')
 
 router.get('/',(req,res)=>{
-    console.log(req.query)
     controller.getAppointments(req.query)
     .then( (appointments)=>{
-        res.send(appointments)
+        response.success(req,res,appointments.length,appointments,200)
     } )
     .catch( e=>{
-        console.error(e)
+        response.error(req,res,"Unexpected Error",500,e)
     })
 })
 router.post('/',(req,res)=>{
     const {patient,date,schedule,specialty,doctor} = req.body
     controller.addAppointment(patient,date,schedule,specialty,doctor)
      .then((appointment)=>{
-         res.send(appointment)
+         response.success(req,res,"Cita médica añadida correctamente",appointment,201)
      })
      .catch( e=>{
-         console.error(e);
+         response.error(req,res,"Información inválida",400,e)
      })
 })
 router.put('/:id',(req,res)=>{
     controller.updateAppointment(req.params.id,req.body)
         .then( (updatedAppointment)=>{
-            res.send(updatedAppointment)
+            response.success(req,res,"Cita médica actualizada correctamente",updatedAppointment,200)
         } )
         .catch(e=>{
-            console.error(e)
+            response.error(req,res,"Error interno",500,e)
         })
 })
-router.delete('/',(req,res)=>{
-    res.send('petición delete a cita médica')
+router.delete('/:id',(req,res)=>{
+    controller.deleteAppointment(req.params.id)
+        .then( (deletedAppointment)=>{
+            response.success(req,res,"Cita médica eliminada correctamente",deletedAppointment,200)
+        } )
+        .catch( e=>{
+            response.error(req,res,"Error interno",500,e)
+        }) 
+    
+    
 })
 
 module.exports = router;
