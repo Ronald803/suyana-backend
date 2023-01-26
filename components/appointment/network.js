@@ -20,16 +20,16 @@ router.post('/',(req,res)=>{
          response.success(req,res,"Cita médica añadida correctamente",appointment,201)
      })
      .catch( e=>{
-         response.error(req,res,"Información inválida",400,e)
+         response.error(req,res,e,400,e)
      })
 })
 router.put('/:id',(req,res)=>{
-    controller.updateAppointment(req.params.id,req.body)
+    controller.updateAppointment(req.params.id,req.body.schedule,req.body.date)
         .then( (updatedAppointment)=>{
             response.success(req,res,"Cita médica actualizada correctamente",updatedAppointment,200)
         } )
         .catch(e=>{
-            response.error(req,res,"Error interno",500,e)
+            response.error(req,res,e,500,e)
         })
 })
 router.delete('/:id',(req,res)=>{
@@ -38,7 +38,7 @@ router.delete('/:id',(req,res)=>{
             response.success(req,res,"Cita médica eliminada correctamente",deletedAppointment,200)
         } )
         .catch( e=>{
-            response.error(req,res,"Error interno",500,e)
+            response.error(req,res,e,500,e)
         }) 
     
     
