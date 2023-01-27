@@ -17,6 +17,14 @@ function addAppointment(patient,date,schedule,specialty,doctor){
         const appointments = await store.list({date,specialty,schedule})
         let taken = appointments.some(function(element){return element.characteristic != "eliminado"})
         if(taken){return reject('Fecha ocupada')}
+        //_________________ adding patient and sessions to doctor ____________
+        const index = enableDoctor[0].patients.findIndex(element=>{ return element.name==patient })
+        if(index==-1){ 
+            const object = {name: patient, sessions: 1};
+            storeDoctor.addPatients(enableDoctor[0]._id,object)    
+        } else {
+            storeDoctor.updateSessions(enableDoctor[0]._id,index,"add")
+        }
         //____________________________________________________________________
         const appointment = {patient, date,schedule,specialty,doctor,characteristic:"reservado"};
         store.add(appointment);
@@ -47,6 +55,10 @@ function deleteAppointment(id){
         //__________________ checking appointment____________________________
         const appoint = await store.list({_id:id})
         if(appoint.length==0){return reject("Id-inválido")}
+        //__________________ update sessions ________________________________
+        const foundDoctor = await storeDoctor.list({name:appoint[0].doctor})
+        const index = foundDoctor[0].patients.findIndex(element=>{return element.name==appoint[0].patient})
+        storeDoctor.updateSessions(foundDoctor[0]._id,index,"subtract")
         //___________________________________________________________________
         const deleted = await store.remove(id)
         resolve(deleted)

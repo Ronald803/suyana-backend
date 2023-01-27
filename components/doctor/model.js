@@ -38,6 +38,18 @@ const mySchema = new Schema({
     characteristic:{
         type: String,
         required: true
+    },
+    email:{
+        type: String,
+        required: true
+    },
+    password:{
+        type: String,
+        required: true
+    },
+    rol:{
+        type: String,
+        required: true
     }
 })
 const model = mongoose.model('Doctor',mySchema)

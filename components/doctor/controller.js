@@ -1,9 +1,14 @@
+const bcryptjs = require('bcryptjs')
 const store = require('./store')
-function addDoctor(name,specialty,branch,availability,phone,address){
+function addDoctor(name,specialty,branch,availability,phone,address,email,password){
     return new Promise( (resolve,reject)=>{
-        if(!name || !specialty || !branch || !availability || !phone || !address){
+        if(!name || !specialty || !branch || !availability || !phone || !address || !email || !password){
             reject("Datos incompletos");
         }
+        //___________________encrypting password________________
+        const salt = bcryptjs.genSaltSync();
+        const encryptPassword = bcryptjs.hashSync( password, salt );
+        //______________________________________________________
         const doctor = {
             name,
             specialty,
@@ -13,7 +18,10 @@ function addDoctor(name,specialty,branch,availability,phone,address){
             address,
             patients: [],
             observatios: [],
-            characteristic: "activo"
+            characteristic: "activo",
+            email,
+            password: encryptPassword,
+            rol: "moderador"
         };
         store.add(doctor);
         resolve(doctor);

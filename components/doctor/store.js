@@ -22,4 +22,17 @@ async function remove(id){
     const deletedDoctor = foundDoctor.save();
     return deletedDoctor
 }
-module.exports = {add,list,update,remove}
+async function addPatients(id,object){
+    const foundDoctor = await Model.findById(id);
+    foundDoctor.patients.push(object);
+    foundDoctor.save()
+}
+async function updateSessions(id,index,operation){
+    const foundDoctor = await Model.findById(id);
+    let obj = foundDoctor.patients[index]
+    operation=="add"? obj.sessions++ : obj.sessions--;
+    foundDoctor.patients.splice(index,1);
+    foundDoctor.patients.push(obj)
+    foundDoctor.save()
+}
+module.exports = {add,list,update,remove,addPatients,updateSessions}

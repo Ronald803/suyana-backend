@@ -13,8 +13,8 @@ router.get('/', (req,res)=>{
         })
 })
 router.post('/', (req,res)=>{
-    const {name,specialty,branch,availability,phone,address} = req.body;
-    controller.addDoctor(name,specialty,branch,availability,phone,address)
+    const {name,specialty,branch,availability,phone,address,email,password} = req.body;
+    controller.addDoctor(name,specialty,branch,availability,phone,address,email,password)
         .then( (newDoctor)=>{
             response.success(req,res,"Terapeuta añadido correctamente",newDoctor,201)
         })
