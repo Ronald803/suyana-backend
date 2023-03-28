@@ -2,7 +2,8 @@ const Model = require('./model')
 
 function add(doctor){
     const newDoctor = new Model(doctor);
-    newDoctor.save();    
+    const doctorSaved = newDoctor.save();    
+    return doctorSaved
 }
 async function list(filter){
     const doctors = await Model.find(filter)

@@ -1,6 +1,8 @@
 const store = require('./store')
 const storeDoctor = require('../doctor/store')
 const storePatient = require('../patient/store')
+const validate = require('../../helpers/validate')
+
 function addAppointment(patient,date,schedule,specialty,doctor){
     return new Promise( async(resolve,reject)=>{
         if(!patient || !date || !schedule || !specialty|| !doctor){return reject('Datos incompletos')} 
@@ -31,8 +33,11 @@ function addAppointment(patient,date,schedule,specialty,doctor){
         resolve(appointment);
     } )
 }
-function getAppointments(filter){
-    return new Promise((resolve,reject)=>{
+function getAppointments(filter,token){
+    return new Promise(async(resolve,reject)=>{
+        // const user = await validate.jsonWebToken(token,["admin","moderador"])
+        // if(!user){return reject('Problemas con el token')}
+        // console.log(user)
         resolve(store.list(filter));
     })
 }

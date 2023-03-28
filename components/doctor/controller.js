@@ -1,7 +1,9 @@
-const bcryptjs = require('bcryptjs')
-const store = require('./store')
+const bcryptjs  = require('bcryptjs')
+const store     = require('./store')
+const jwt       = require('jsonwebtoken')
+
 function addDoctor(name,specialty,branch,availability,phone,address,email,password){
-    return new Promise( (resolve,reject)=>{
+    return new Promise( async(resolve,reject)=>{
         if(!name || !specialty || !branch || !availability || !phone || !address || !email || !password){
             reject("Datos incompletos");
         }
@@ -23,8 +25,16 @@ function addDoctor(name,specialty,branch,availability,phone,address,email,passwo
             password: encryptPassword,
             rol: "moderador"
         };
-        store.add(doctor);
-        resolve(doctor);
+        //_________________saving in data base_________________
+        const doctorSaved = await store.add(doctor);
+        //_________________generating jwtoken__________________
+        const payload   = {uid: doctorSaved._id}
+        const token     = jwt.sign(payload,process.env.SECRETORPRIVATEKEY,{expiresIn:'4h'})        
+        resolve({
+            name:   doctorSaved.name,
+            rol:    doctorSaved.rol,
+            token
+        });
     } )
 
 }

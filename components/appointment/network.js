@@ -4,12 +4,12 @@ const controller = require('./controller')
 const response = require('../../network/response')
 
 router.get('/',(req,res)=>{
-    controller.getAppointments(req.query)
+    controller.getAppointments(req.query,req.header('x-token'))
     .then( (appointments)=>{
         response.success(req,res,appointments.length,appointments,200)
     } )
     .catch( e=>{
-        response.error(req,res,"Unexpected Error",500,e)
+        response.error(req,res,e,500,e)
     })
 })
 router.post('/',(req,res)=>{
