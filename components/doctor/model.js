@@ -16,7 +16,7 @@ const mySchema = new Schema({
         required: true
     },
     availability: {
-        type: Array,
+        type: String,
         required: true
     },
     phone: {
