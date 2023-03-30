@@ -13,8 +13,8 @@ router.get('/',(req,res)=>{
     })
 })
 router.post('/',(req,res)=>{
-    const {patient,date,schedule,specialty,doctor} = req.body
-    controller.addAppointment(patient,date,schedule,specialty,doctor)
+    const {name,cellphone,doctor,specialty,dateTime,branch,complete} = req.body
+    controller.addAppointment(name,cellphone,doctor,specialty,dateTime,branch,complete)
      .then((appointment)=>{
          response.success(req,res,"Cita médica añadida correctamente",appointment,201)
      })

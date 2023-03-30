@@ -3,8 +3,12 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const mySchema = new Schema({
-    patient:{
+    name:{
         type: String,
+        required: true
+    },
+    cellphone:{
+        type: Number,
         required: true
     },
     doctor:{
@@ -15,12 +19,16 @@ const mySchema = new Schema({
         type: String,
         required: true
     },
-    date:{
+    dateTime:{
         type: Date,
         required: true
     },
-    schedule:{
+    branch: {
         type: String,
+        required: true
+    },
+    complete: {
+        type: Boolean,
         required: true
     },
     characteristic:{

@@ -3,11 +3,11 @@ const storeDoctor = require('../doctor/store')
 const storePatient = require('../patient/store')
 const validate = require('../../helpers/validate')
 
-function addAppointment(patient,date,schedule,specialty,doctor){
+function addAppointment(name,cellphone,doctor,specialty,dateTime,branch,complete){//patient,date,schedule,specialty,doctor){
     return new Promise( async(resolve,reject)=>{
-        if(!patient || !date || !schedule || !specialty|| !doctor){return reject('Datos incompletos')} 
+        if(!name || !cellphone || !doctor || !specialty|| !dateTime || !branch){return reject('Datos incompletos')} 
         //_________________ checking patient information _____________________
-        const enablePatient = await storePatient.list({name:patient})
+        const enablePatient = await storePatient.list({name:name})
         if(enablePatient.length==0){return reject('No hay registro de ese Paciente')}
         if(enablePatient[0].characteristic=="eliminado"){ return reject('Paciente inhabilitado')}
         //_________________ checking doctor information ______________________
@@ -16,19 +16,19 @@ function addAppointment(patient,date,schedule,specialty,doctor){
         if(enableDoctor[0].characteristic=="eliminado"){ return reject('Terapeuta inhabilitado')}
         if(enableDoctor[0].specialty!=specialty){return reject(`Lic. ${doctor} no atiende el servicio de ${specialty}`)}
         //_________________ checking availability ____________________________
-        const appointments = await store.list({date,specialty,schedule})
+        const appointments = await store.list({dateTime,specialty})
         let taken = appointments.some(function(element){return element.characteristic != "eliminado"})
         if(taken){return reject('Fecha ocupada')}
         //_________________ adding patient and sessions to doctor ____________
-        const index = enableDoctor[0].patients.findIndex(element=>{ return element.name==patient })
+        const index = enableDoctor[0].patients.findIndex(element=>{ return element.name==name })
         if(index==-1){ 
-            const object = {name: patient, sessions: 1};
+            const object = {name: name, sessions: 1};
             storeDoctor.addPatients(enableDoctor[0]._id,object)    
         } else {
             storeDoctor.updateSessions(enableDoctor[0]._id,index,"add")
         }
         //____________________________________________________________________
-        const appointment = {patient, date,schedule,specialty,doctor,characteristic:"reservado"};
+        const appointment = {name,cellphone,doctor,specialty,dateTime,branch,complete,characteristic:"reservado"};
         store.add(appointment);
         resolve(appointment);
     } )
