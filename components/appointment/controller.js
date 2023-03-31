@@ -62,7 +62,8 @@ function deleteAppointment(id){
         if(appoint.length==0){return reject("Id-inválido")}
         //__________________ update sessions ________________________________
         const foundDoctor = await storeDoctor.list({name:appoint[0].doctor})
-        const index = foundDoctor[0].patients.findIndex(element=>{return element.name==appoint[0].patient})
+        //console.log(appoint[0]);
+        const index = foundDoctor[0].patients.findIndex(element=>{return element.name==appoint[0].name})
         storeDoctor.updateSessions(foundDoctor[0]._id,index,"subtract")
         //___________________________________________________________________
         const deleted = await store.remove(id)

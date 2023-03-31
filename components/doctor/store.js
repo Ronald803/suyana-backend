@@ -29,6 +29,7 @@ async function addPatients(id,object){
     foundDoctor.save()
 }
 async function updateSessions(id,index,operation){
+    console.log({id},{index},{operation});
     const foundDoctor = await Model.findById(id);
     let obj = foundDoctor.patients[index]
     operation=="add"? obj.sessions++ : obj.sessions--;
