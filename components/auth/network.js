@@ -1,16 +1,16 @@
 const express = require('express');
 const router = express.Router();
 const controller = require('./controller')
-const response = require('../../network/response')
+const responseFunc = require('../../network/responseFunc')
 
 router.post('/login',(req,res)=>{
     const {email,password} = req.body;
     controller.login(email,password)
         .then((message)=>{
-            response.success(req,res,"logeado correctamente",message,201)
+            responseFunc.success(req,res,"Loggeado correctamente",message,201)
         })
         .catch( e=>{
-            response.error(req,res,e,400,e)
+            responseFunc.error(req,res,"Algo salió mal",400,e)
         })
 })
 

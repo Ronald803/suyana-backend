@@ -1,43 +1,44 @@
-const express = require('express');
-const router = express.Router();
-const controller = require('./controller')
-const response = require('../../network/response')
+const express           = require('express');
+const router            = express.Router();
+const controller        = require('./controller')
+const responseFunc      = require('../../network/responseFunc')
+const {validationJwtRol}= require('../../middlewares/validationJwtRol') 
 
 router.get('/',(req,res)=>{
     controller.getAppointments(req.query,req.header('x-token'))
     .then( (appointments)=>{
-        response.success(req,res,appointments.length,appointments,200)
+        responseFunc.success(req,res,appointments.length,appointments,200)
     } )
     .catch( e=>{
-        response.error(req,res,e,500,e)
+        responseFunc.error(req,res,"Algo salió mal",500,e)
     })
 })
-router.post('/',(req,res)=>{
+router.post('/',validationJwtRol(),(req,res)=>{
     const {name,cellphone,doctor,specialty,dateTime,branch,complete} = req.body
     controller.addAppointment(name,cellphone,doctor,specialty,dateTime,branch,complete)
      .then((appointment)=>{
-         response.success(req,res,"Cita médica añadida correctamente",appointment,201)
+         responseFunc.success(req,res,"Cita médica añadida correctamente",appointment,201)
      })
      .catch( e=>{
-         response.error(req,res,e,400,e)
+         responseFunc.error(req,res,e,400,e)
      })
 })
-router.put('/:id',(req,res)=>{
+router.put('/:id',validationJwtRol(),(req,res)=>{
     controller.updateAppointment(req.params.id,req.body.schedule,req.body.date)
         .then( (updatedAppointment)=>{
-            response.success(req,res,"Cita médica actualizada correctamente",updatedAppointment,200)
+            responseFunc.success(req,res,"Cita médica actualizada correctamente",updatedAppointment,200)
         } )
         .catch(e=>{
-            response.error(req,res,e,500,e)
+            responseFunc.error(req,res,e,500,e)
         })
 })
-router.delete('/:id',(req,res)=>{
+router.delete('/:id',validationJwtRol(),(req,res)=>{
     controller.deleteAppointment(req.params.id)
         .then( (deletedAppointment)=>{
-            response.success(req,res,"Cita médica eliminada correctamente",deletedAppointment,200)
+            responseFunc.success(req,res,"Cita médica eliminada correctamente",deletedAppointment,200)
         } )
         .catch( e=>{
-            response.error(req,res,e,500,e)
+            responseFunc.error(req,res,e,500,e)
         }) 
     
     

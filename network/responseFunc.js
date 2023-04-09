@@ -6,8 +6,11 @@ exports.success = function (req,res,message,body,status){
 }
 
 exports.error = function (req,res,message,status,details){
-    console.error(details);
+    //console.error(details);
     res.status(status||500).send({
-        error: message,
+        messsage: message,
+        body: {
+            error: details
+        }
     })
 }

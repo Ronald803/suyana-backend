@@ -15,7 +15,11 @@ function login(email,password){
         //____________________ generating jwtoken _____________________
         const payload = {uid: user[0]._id}
         const token = jwt.sign(payload,process.env.SECRETORPRIVATEKEY,{expiresIn: '4h'})
-        resolve(token)
+        resolve({
+            name: user[0].name,
+            rol: user[0].rol,
+            token
+        })
     })
 }
 module.exports = {login}
