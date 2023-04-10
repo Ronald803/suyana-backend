@@ -8,7 +8,7 @@ exports.success = function (req,res,message,body,status){
 exports.error = function (req,res,message,status,details){
     //console.error(details);
     res.status(status||500).send({
-        messsage: message,
+        message: message,
         body: {
             error: details
         }

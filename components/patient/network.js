@@ -4,8 +4,9 @@ const controller        = require('./controller')
 const responseFunc      = require('../../network/responseFunc')
 const {validationJwtRol}= require('../../middlewares/validationJwtRol') 
 
-router.get('/',(req,res)=>{
-    controller.getPatient(req.query)
+router.get('/',validationJwtRol(),(req,res)=>{
+    const rol = req.user.rol;
+    controller.getPatient(req.query,rol)
         .then( (patients)=>{
             responseFunc.success(req,res,patients.length,patients,200)
         } )

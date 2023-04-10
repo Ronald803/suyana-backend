@@ -12,7 +12,7 @@ const validationJwtRol = (rol)=>{
         try{
             const { uid } = jwt.verify(token,process.env.SECRETORPRIVATEKEY);
             const user = await Model.findById(uid);
-            if(!user || user.characteristic==='deleted'){
+            if(!user || user.characteristic==='eliminado'){
                 return responseFunc.error(req,res,"Algo salió mal",401,"Usuario Inhabilitado")
             }
             if(rol && user.rol !== rol){
@@ -21,7 +21,7 @@ const validationJwtRol = (rol)=>{
             req.user = user;
             next()
         } catch(error){
-            responseFunc(req,res,"Algo salió mal",401,"Algo salió mal")
+            responseFunc.error(req,res,"Algo salió mal",401,"Algo salió mal")
         }
     }
 }

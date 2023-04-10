@@ -19,7 +19,7 @@ async function update(id,body){
 }
 async function remove(id){
     const foundDoctor = await Model.findById(id);
-    foundDoctor.characteristic = "elimiinado";
+    foundDoctor.characteristic = "eliminado";
     const deletedDoctor = foundDoctor.save();
     return deletedDoctor
 }
@@ -29,7 +29,7 @@ async function addPatients(id,object){
     foundDoctor.save()
 }
 async function updateSessions(id,index,operation){
-    console.log({id},{index},{operation});
+    //console.log({id},{index},{operation});
     const foundDoctor = await Model.findById(id);
     let obj = foundDoctor.patients[index]
     operation=="add"? obj.sessions++ : obj.sessions--;

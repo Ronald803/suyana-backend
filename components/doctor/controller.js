@@ -38,9 +38,21 @@ function addDoctor(name,specialty,branch,availability,phone,address,email,passwo
     } )
 
 }
-function getDoctor(filter){
-    return new Promise( (resolve,reject)=>{
-        resolve(store.list(filter))
+function getDoctor(filter,rol){
+    return new Promise( async (resolve,reject)=>{
+        const users = await store.list(filter)
+        let arrayOfUsers = [];
+        if(rol==="administrador"&&filter.characteristic==="eliminado"){
+            resolve(users)
+        } else if (rol!=="administrador"&&filter.characteristic==="eliminado"){
+            resolve()
+        }
+        users.map( element => {
+            if(element.characteristic!=="eliminado"){
+                arrayOfUsers.push(element)
+            }
+        })    
+        resolve(arrayOfUsers)
     } )
 }
 function updateDoctor(id,body){

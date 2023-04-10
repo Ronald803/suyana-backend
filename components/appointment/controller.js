@@ -1,7 +1,7 @@
 const store = require('./store')
 const storeDoctor = require('../doctor/store')
 const storePatient = require('../patient/store')
-const validate = require('../../helpers/validate')
+//const validate = require('../../helpers/validate')
 
 function addAppointment(name,cellphone,doctor,specialty,dateTime,branch,complete){//patient,date,schedule,specialty,doctor){
     return new Promise( async(resolve,reject)=>{
@@ -33,12 +33,21 @@ function addAppointment(name,cellphone,doctor,specialty,dateTime,branch,complete
         resolve(appointment);
     } )
 }
-function getAppointments(filter,token){
+function getAppointments(filter,rol){
     return new Promise(async(resolve,reject)=>{
-        // const user = await validate.jsonWebToken(token,["admin","moderador"])
-        // if(!user){return reject('Problemas con el token')}
-        // console.log(user)
-        resolve(store.list(filter));
+        const appointments = await store.list(filter);
+        let arrayOfAppointments = [];
+        if(rol==="administrador"&&filter.characteristic==="eliminado"){
+            resolve(appointments)
+        } else if (rol!=="administrador"&&filter.characteristic==="eliminado"){
+            resolve()
+        }
+        appointments.map( element => {
+            if(element.characteristic!=="eliminado"){
+                arrayOfAppointments.push(element)
+            }
+        }) 
+        resolve(arrayOfAppointments);
     })
 }
 function updateAppointment(id,schedule,date){

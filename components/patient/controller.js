@@ -19,9 +19,21 @@ function addPatient(name,age,birthday,phone,branch,specialty,diagnosis){
         resolve(patient)
     } ) 
 }
-function getPatient(filter){
-    return new Promise( (resolve,reject)=>{
-        resolve(store.list(filter))
+function getPatient(filter,rol){
+    return new Promise( async(resolve,reject)=>{
+        const patients = await store.list(filter)
+        let arrayOfPatients = [];
+        if(rol==="administrador"&&filter.characteristic==="eliminado"){
+            resolve(patients)
+        } else if (rol!=="administrador"&&filter.characteristic==="eliminado"){
+            resolve()
+        }
+        patients.map( element => {
+            if(element.characteristic!=="eliminado"){
+                arrayOfPatients.push(element)
+            }
+        }) 
+        resolve(arrayOfPatients)
     } )
 }
 function updatePatient(id,body){
