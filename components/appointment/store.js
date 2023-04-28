@@ -7,10 +7,11 @@ async function list(filter){
     const appointments = await Model.find(filter);
     return appointments
 }
-async function update(id,schedule,date){
+async function update(id,doctor,specialty,dateTime){
     const foundAppointment = await Model.findOne({_id:id})
-    foundAppointment.schedule = schedule;
-    foundAppointment.date = date;
+    foundAppointment.doctor = doctor;
+    foundAppointment.specialty = specialty;
+    foundAppointment.dateTime = dateTime;
     foundAppointment.characteristic = "modificado";
     const updatedAppointment = await foundAppointment.save();
     return updatedAppointment;

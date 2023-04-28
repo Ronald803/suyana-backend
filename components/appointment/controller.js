@@ -50,16 +50,20 @@ function getAppointments(filter,rol){
         resolve(arrayOfAppointments);
     })
 }
-function updateAppointment(id,schedule,date){
+function updateAppointment(id,body){
     return new Promise( async(resolve,reject)=>{
-        if(!id || !date || !schedule){ return reject ("Incomplete data")}
+        if(!id || !body){ return reject ("Incomplete data")}
+        //__________________ desestructurando _______________________________
+        const {doctor,specialty,dateTime} = body
+        console.log({doctor},{specialty},{dateTime});
         //__________________ checking availability __________________________
         const appoint = await store.list({_id:id})
-        const appointments = await store.list({date,schedule,specialty: appoint[0].specialty})
+        if(appoint.length===0){return reject("Datos incorrectos")}
+        const appointments = await store.list({dateTime,"specialty": appoint[0].specialty})
         let taken = appointments.some(function(element){return element.characteristic != "eliminado"})
         if(taken){return reject('No se puede hacer el cambio, esa fecha y horario ya están ocupados')}
         //___________________________________________________________________
-        const updated = await store.update(id, schedule,date)
+        const updated = await store.update(id,doctor,specialty,dateTime)
         resolve(updated)
     } )
 }

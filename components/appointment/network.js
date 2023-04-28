@@ -26,7 +26,7 @@ router.post('/',validationJwtRol(),(req,res)=>{
      })
 })
 router.put('/:id',validationJwtRol(),(req,res)=>{
-    controller.updateAppointment(req.params.id,req.body.schedule,req.body.date)
+    controller.updateAppointment(req.params.id,req.body)
         .then( (updatedAppointment)=>{
             responseFunc.success(req,res,"Cita médica actualizada correctamente",updatedAppointment,200)
         } )
