@@ -12,7 +12,7 @@ router.get('/',validationJwtRol(),(req,res)=>{
         responseFunc.success(req,res,appointments.length,appointments,200)
     } )
     .catch( e=>{
-        responseFunc.error(req,res,"Algo salió mal",500,e)
+        responseFunc.error(req,res,500,e)
     })
 })
 router.post('/',validationJwtRol(),(req,res)=>{
@@ -22,7 +22,7 @@ router.post('/',validationJwtRol(),(req,res)=>{
          responseFunc.success(req,res,"Cita médica añadida correctamente",appointment,201)
      })
      .catch( e=>{
-         responseFunc.error(req,res,e,400,e)
+         responseFunc.error(req,res,400,e)
      })
 })
 router.put('/:id',validationJwtRol(),(req,res)=>{
@@ -31,7 +31,7 @@ router.put('/:id',validationJwtRol(),(req,res)=>{
             responseFunc.success(req,res,"Cita médica actualizada correctamente",updatedAppointment,200)
         } )
         .catch(e=>{
-            responseFunc.error(req,res,e,500,e)
+            responseFunc.error(req,res,500,e)
         })
 })
 router.delete('/:id',validationJwtRol(),(req,res)=>{
@@ -40,7 +40,7 @@ router.delete('/:id',validationJwtRol(),(req,res)=>{
             responseFunc.success(req,res,"Cita médica eliminada correctamente",deletedAppointment,200)
         } )
         .catch( e=>{
-            responseFunc.error(req,res,e,500,e)
+            responseFunc.error(req,res,500,e)
         }) 
     
     

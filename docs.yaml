@@ -1,0 +1,133 @@
+openapi: 3.0.3
+info:
+  title: SUYAÑA API
+  description: |-
+    You can find the app at [https://suyana-api.vercel.app/api](https://suyana-api.vercel.app/api). 
+  version: 1.0.0
+servers:
+  - url: https://suyana-api.vercel.app/
+tags:
+  - name: doctor
+    description: Information about the therapists and the staff of Suyaña
+  - name: auth
+    description: This endpoint is used in order to start a session
+  - name: patient
+    description: Information about patients
+  - name: appointment
+    description: Information about appointments
+
+paths:
+  /doctor:
+    post:
+      tags:
+        - doctor
+      summary: Create a new doctor account and stores the information in the database
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BodyUsersPost'
+        required: true
+      responses:
+        200:
+          description: (Ok) The new user has been saved correctly
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExitoUsersPost'
+        400:
+          description: (Error)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+      
+components:
+  parameters:
+    token:
+      in: header
+      name: x-token
+      description: Authentication token
+      required: true
+      schema:
+        type: string
+        
+  schemas:
+    BodyUsersPost:
+      type: object
+      properties:
+        name:
+          type: string
+          description: full name of the use
+          example: Erick Emerson Campos Salazar
+        username:
+          type: string
+          description: nickname of the  user
+          example: eecampos
+        email:
+          type: string
+          description: email address of the user
+          example: erijei27@gmail.com
+        professor:
+          type: string
+          description: name of the subject teacher etn1040
+          example: Jose Campero
+        tutor:
+          type: string
+          description: name of the tutor of the student
+          example: Krusty Aguilera
+        projectTitle:
+          type: string 
+          description: title of the graduation project
+          example: Radio Enlace con 5G
+        mention:
+          type: string
+          description: the api does not have validations in this case, but in the electronic career we only have the following mentions telecomunicaciones, control, y sistemas
+          example: Telecomunicaciones
+        courts:
+          type: array
+          items: {}
+          description: this is an array of strings
+          example: [Alberto Aguilera,Roberto Oropeza]
+        password:
+          type: string
+          description: password that will be required to login
+          example: asdf1358asd12fa2
+  
+    ExitoUsersPost:
+      type: object
+      properties:
+        message:
+          type: string
+          description: The message will be "usuario registrado correctamente"
+          example: usuario registrado correctamente
+        body:
+          type: object
+          properties:
+            name:
+              type: string
+              description: complete name of the student or teacher
+              example: Erick Emerson Campos Salazar
+            rol:
+              type: string
+              description: it will be "user"
+              example: user
+            token:
+              type: string
+              description: this will be required to save the progress
+              example: asdf543as1df3a58s4df3a1d3f5d
+  
+    BadRequest:
+      type: object
+      properties:
+        message:
+          type: string
+          description: "Algo salió mal"
+          example: Algo salió mal
+        body:
+          type: object
+          properties:
+            error:
+              type: string
+              description: here will be the description of the error
+              example: Incomplete data

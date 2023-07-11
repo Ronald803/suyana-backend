@@ -5,10 +5,9 @@ exports.success = function (req,res,message,body,status){
     });
 }
 
-exports.error = function (req,res,message,status,details){
-    //console.error(details);
+exports.error = function (req,res,status,details){
     res.status(status||500).send({
-        message: message,
+        message: 'Algo salió mal',
         body: {
             error: details
         }

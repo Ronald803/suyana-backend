@@ -12,17 +12,17 @@ router.get('/', validationJwtRol(), (req,res)=>{
             responseFunc.success(req,res,doctors.length,doctors,200)
         } )
         .catch( e=>{
-            responseFunc.error(req,res,"Unexpected Error",500,e)
+            responseFunc.error(req,res,500,e)
         })
 })
-router.post('/', validationJwtRol(),(req,res)=>{
+router.post('/',(req,res)=>{
     const {name,specialty,branch,availability,phone,address,email,password} = req.body;
     controller.addDoctor(name,specialty,branch,availability,phone,address,email,password)
         .then( (newDoctor)=>{
             responseFunc.success(req,res,"Terapeuta añadido correctamente",newDoctor,201)
         })
         .catch( e=>{
-            responseFunc.error(req,res,"Información inválida",400,e)
+            responseFunc.error(req,res,400,e)
         })
 })
 router.put('/:id', validationJwtRol(), (req,res)=>{
@@ -31,7 +31,7 @@ router.put('/:id', validationJwtRol(), (req,res)=>{
             responseFunc.success(req,res,"Información de Terapeuta actualizada correctamente",updatedDoctor,200)
         })
         .catch( e=>{
-            responseFunc.error(req,res,"Error interno",500,e)
+            responseFunc.error(req,res,500,e)
         })
 })
 router.delete('/:id', validationJwtRol(), (req,res)=>{
@@ -40,7 +40,7 @@ router.delete('/:id', validationJwtRol(), (req,res)=>{
             responseFunc.success(req,res,"Terapeuta dado de baja",deletedDoctor,200)
         })
         .catch( e=>{
-            responseFunc.error(req,res,"Error interno",500,e)
+            responseFunc.error(req,res,500,e)
         })
 })
 module.exports = router;

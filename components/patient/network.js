@@ -11,7 +11,7 @@ router.get('/',validationJwtRol(),(req,res)=>{
             responseFunc.success(req,res,patients.length,patients,200)
         } )
         .catch( e=>{
-            responseFunc.error(req,res,"Unexpected Error",500,e)
+            responseFunc.error(req,res,500,e)
         })
 })
 router.post('/',validationJwtRol(),(req,res)=>{
@@ -21,7 +21,7 @@ router.post('/',validationJwtRol(),(req,res)=>{
             responseFunc.success(req,res,"Paciente añadido correctamente",patient,201)
         })
         .catch( e=>{
-            responseFunc.error(req,res,"Información inválida",400,e)
+            responseFunc.error(req,res,400,e)
         })
 })
 router.put('/:id',validationJwtRol(),(req,res)=>{
@@ -30,7 +30,7 @@ router.put('/:id',validationJwtRol(),(req,res)=>{
             responseFunc.success(req,res,"Información de paciente actualizada",updatedPatient,200)
         } )
         .catch( e=>{
-            responseFunc.error(req,res,"Error interno",500,e)
+            responseFunc.error(req,res,500,e)
         })
 })
 router.delete('/:id',validationJwtRol(),(req,res)=>{
@@ -39,7 +39,7 @@ router.delete('/:id',validationJwtRol(),(req,res)=>{
             responseFunc.success(req,res,"Paciente eliminado",deletedPatient,200)
         } )
         .catch( e=>{
-            responseFunc.error(req,res,"Error interno",500,e)
+            responseFunc.error(req,res,500,e)
         })
 })
 module.exports = router;
