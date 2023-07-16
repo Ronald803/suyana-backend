@@ -1,6 +1,6 @@
 const store = require('./store')
 function addPatient(name,age,birthday,phone,branch,specialty,diagnosis){
-    return new Promise( (resolve,reject)=>{
+    return new Promise( async (resolve,reject)=>{
         if(!name || !age || !birthday || !phone || !branch){
             return reject('Datos incompletos');
         }
@@ -11,12 +11,12 @@ function addPatient(name,age,birthday,phone,branch,specialty,diagnosis){
             phone,
             branch,
             specialty: specialty || ["fisioterapia","psicología","fonoaudiología","psicopedagogía","terapia ocupacional"],
-            characteristic: "registrado",
+            characteristic: "active",
             diagnosis: diagnosis || "Sin diagnostico",
-            evaluation: ["pendiente","pendiente",45689]
+            evaluation: ["Pendiente"]
         }
-        store.add(patient)
-        resolve(patient)
+        const newPatient = await store.add(patient)
+        resolve({_id: newPatient._id})
     } ) 
 }
 function getPatient(filter,rol){

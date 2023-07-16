@@ -3,7 +3,7 @@ const storeDoctor = require('../doctor/store')
 const storePatient = require('../patient/store')
 //const validate = require('../../helpers/validate')
 
-function addAppointment(name,cellphone,doctor,specialty,dateTime,branch,complete){//patient,date,schedule,specialty,doctor){
+function addAppointment(name,cellphone,doctor,specialty,dateTime,branch){//patient,date,schedule,specialty,doctor){
     return new Promise( async(resolve,reject)=>{
         if(!name || !cellphone || !doctor || !specialty|| !dateTime || !branch){return reject('Datos incompletos')} 
         //_________________ checking patient information _____________________
@@ -28,7 +28,7 @@ function addAppointment(name,cellphone,doctor,specialty,dateTime,branch,complete
             storeDoctor.updateSessions(enableDoctor[0]._id,index,"add")
         }
         //____________________________________________________________________
-        const appointment = {name,cellphone,doctor,specialty,dateTime,branch,complete,characteristic:"reservado"};
+        const appointment = {name,cellphone,doctor,specialty,dateTime,branch,complete: false,characteristic:"reservado"};
         store.add(appointment);
         resolve(appointment);
     } )

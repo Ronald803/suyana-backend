@@ -8,7 +8,6 @@ servers:
   - url: https://suyana-api.vercel.app/
 tags:
   - name: doctor
-    description: Information about the therapists and the staff of Suyaña
   - name: auth
     description: This endpoint is used in order to start a session
   - name: patient
@@ -17,6 +16,30 @@ tags:
     description: Information about appointments
 
 paths:
+  /auth/login:
+    post:
+      tags:
+        - auth
+      summary: Request to login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BodyUserLogin'
+      responses:
+        201:
+          description: Correct request
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginSuccessful'
+        400:
+          description: Reasons why the app returns a bad request response could be Incomplete data, wrong information, disabled user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+
   /doctor:
     post:
       tags:
@@ -29,94 +52,220 @@ paths:
               $ref: '#/components/schemas/BodyUsersPost'
         required: true
       responses:
-        200:
+        201:
           description: (Ok) The new user has been saved correctly
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ExitoUsersPost'
+                $ref: '#/components/schemas/UserCreatedSuccessfully'
         400:
           description: (Error)
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/BadRequest'
-      
+  /patient:
+    post:
+      tags:
+        - patient
+      parameters:
+        - name:
+          $ref: '#/components/parameters/token'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BodyPatientPost'
+      responses:
+        201:
+          description: (Ok) The new patient has been saved correctly
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PatientCreatedSuccessfully'
+        400:
+          description: (Error)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+  /appointment:
+    post:
+      tags: 
+        - appointment
+      parameters:
+        - name:
+          $ref: '#/components/parameters/token'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BodyPatientPost'
+      responses:
+        201:
+          description: (Ok) The new patient has been saved correctly
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PatientCreatedSuccessfully'
+        400:
+          description: (Error)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+
 components:
   parameters:
     token:
       in: header
-      name: x-token
+      name: xtoken
       description: Authentication token
       required: true
       schema:
         type: string
-        
+        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2NDIzNTQyM2ZjMTJjN2FmNjMwN2U1ZjkiLCJpYXQiOjE2ODk0NjA3NjgsImV4cCI6MTY4OTQ3NTE2OH0.eEDM17bAv_e9eEJql5AJ5Vs6cSoMeD2fHwiSKI578nA
   schemas:
+    BodyUserLogin:
+      type: object
+      properties:
+        email:
+          type: string
+          description: email with which the user created his account
+          example: cristian@gmail.com
+        password:
+          type: string
+          example: 4ik35m6nf
+    
     BodyUsersPost:
       type: object
       properties:
         name:
           type: string
-          description: full name of the use
-          example: Erick Emerson Campos Salazar
-        username:
+          description: full name of the user
+          example: Cristian Alvarez Aguilar
+        specialty:
           type: string
-          description: nickname of the  user
-          example: eecampos
+          description: could it be "Fisioterapia", "Fonoaudiología", "Psicomotricidad", "Psicología", "Terapia Ocupacional"        
+          example: Fisioterapia
+        branch:
+          type: string
+          description: Suyana has two branches "La Paz" and "El Alto"
+          example: La Paz
+        availability:
+          type: string
+          description: The availability of the staff
+          example: Mañana
+        phone:
+          type: number
+          example: 74531256
+        address:
+          type: string
+          example: C. Boqueron N. 453 Z. San Pedro
         email:
           type: string
-          description: email address of the user
-          example: erijei27@gmail.com
-        professor:
-          type: string
-          description: name of the subject teacher etn1040
-          example: Jose Campero
-        tutor:
-          type: string
-          description: name of the tutor of the student
-          example: Krusty Aguilera
-        projectTitle:
-          type: string 
-          description: title of the graduation project
-          example: Radio Enlace con 5G
-        mention:
-          type: string
-          description: the api does not have validations in this case, but in the electronic career we only have the following mentions telecomunicaciones, control, y sistemas
-          example: Telecomunicaciones
-        courts:
-          type: array
-          items: {}
-          description: this is an array of strings
-          example: [Alberto Aguilera,Roberto Oropeza]
+          example: cristian@gmail.com
         password:
           type: string
-          description: password that will be required to login
           example: asdf1358asd12fa2
-  
-    ExitoUsersPost:
+    BodyPatientPost:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "Juan Perez de los Palotes"
+        age:
+          type: number
+          example: 12
+        birthday:
+          type: string
+          example: 2011-05-03
+        phone:
+          type: number
+          example: 68985465
+        branch:
+          type: string
+          example: "La Paz"
+        specialty:
+          type: array
+          description: Specialties the patient will need
+          example: ["Fisioterapia","Psicología"]
+        diagnosis:
+          type: string
+          description: Patient diagnosis, this property is not mandatory   
+          example: El paciente tiene problemas de pie plano, necesita fisioterapia
+    BodyAppointmentPost:
+      type: object
+      properties:
+        name:
+          type: string
+          description: name of the patient, the patient must be registered in the database
+          example: Juan Perez de los Palotes
+        cellphone:
+          type: number
+          example: 2915952
+        doctor:
+          type: string
+          description: name of the therapist
+          example: Cristian Alvarez Aguilar
+        specialty:
+          type: string
+          description: the specialty must match with the doctor
+          example: Fonoaudiología
+        dateTime: 
+          type: string
+          description: day an hour
+          example: 2023-04-28T20:30
+        branch:
+          type: string
+          example: La Paz
+    UserCreatedSuccessfully:
       type: object
       properties:
         message:
           type: string
-          description: The message will be "usuario registrado correctamente"
-          example: usuario registrado correctamente
+          example: Terapeuta añadido correctamente
         body:
           type: object
           properties:
             name:
               type: string
-              description: complete name of the student or teacher
-              example: Erick Emerson Campos Salazar
+              example: Cristian Alvarez Aguilar
+            notice:
+              type: string
+              example: Favor esperar a que un administrador habilite tu cuenta, se te notificará a tu correo electrónico
+    PatientCreatedSuccessfully:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Paciente añadido correctamente
+        body:
+          type: object
+          properties:
+            _id:
+              type: string
+              example: 64b322f0c70f905b656e58e1
+    LoginSuccessful:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Sesión iniciada correctamente
+        body:
+          type: object
+          properties:
+            name:
+              type: string
+              description: name of the user that requested login
+              example: Cristian Alvarez Aguilar
             rol:
               type: string
-              description: it will be "user"
-              example: user
+              example: therapist
             token:
               type: string
-              description: this will be required to save the progress
-              example: asdf543as1df3a58s4df3a1d3f5d
-  
+              description: key that will be necessary to make other requests
+              example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ5.eyJ1aWQiOiI2NDIzNTUyN2RlMGM3NmQwZjIyNzZmZjMiLCJpYXQiOjE2ODkwNDM2MDcsImV4cCI6MTY4OTA1ODAwN30.uvlvAIAADwwK5eLtjgVypPMfHryJvL8XjIBrgTs7XYY      
     BadRequest:
       type: object
       properties:
@@ -130,4 +279,8 @@ components:
             error:
               type: string
               description: here will be the description of the error
-              example: Incomplete data
+              example: Datos incompletos
+    token:
+      type: string
+      example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2NDIzNTQyM2ZjMTJjN2FmNjMwN2U1ZjkiLCJpYXQiOjE2ODk0NjA3NjgsImV4cCI6MTY4OTQ3NTE2OH0.eEDM17bAv_e9eEJql5AJ5Vs6cSoMeD2fHwiSKI578nA
+  

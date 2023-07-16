@@ -21,7 +21,7 @@ function addDoctor(name,specialty,branch,availability,phone,address,email,passwo
                 address,
                 patients: [],
                 observatios: [],
-                characteristic: "inactivo",
+                characteristic: "inactive",
                 email,
                 password: encryptPassword,
                 rol: "moderador"

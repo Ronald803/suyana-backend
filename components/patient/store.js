@@ -3,7 +3,8 @@ const Model = require('./model')
 function add (patient){
     console.log(patient);
     const newPatient = new Model(patient)
-    newPatient.save();
+    const savedUser = newPatient.save();
+    return savedUser
 }
 async function list(filter){
     const patients = await Model.find(filter)

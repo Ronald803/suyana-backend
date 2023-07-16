@@ -8,7 +8,7 @@ function login(email,password){
         const user = await storeDoctor.list({email})
         if(user.length<1){return reject('Información incorrecta') }
         //____________________ checking user is active ________________
-        if(user[0].characteristic=="eliminado"){return reject('Usuario inhabilitado')}
+        if(user[0].characteristic=="eliminado" || user[0].characteristic=="inactive"){return reject('Usuario inhabilitado')}
         //____________________ checking password is correct ___________
         const validPassword = bcryptjs.compareSync(password, user[0].password);
         if(!validPassword){return reject('Información incorrecta')}
