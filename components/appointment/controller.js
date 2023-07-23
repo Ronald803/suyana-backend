@@ -3,9 +3,9 @@ const storeDoctor = require('../doctor/store')
 const storePatient = require('../patient/store')
 //const validate = require('../../helpers/validate')
 
-function addAppointment(name,cellphone,doctor,specialty,dateTime,branch){//patient,date,schedule,specialty,doctor){
+function addAppointment(name,cellphone,doctor,specialty,date,time,branch){//patient,date,schedule,specialty,doctor){
     return new Promise( async(resolve,reject)=>{
-        if(!name || !cellphone || !doctor || !specialty|| !dateTime || !branch){return reject('Datos incompletos')} 
+        if(!name || !cellphone || !doctor || !specialty|| !date|| !time || !branch){return reject('Datos incompletos')} 
         //_________________ checking patient information _____________________
         const enablePatient = await storePatient.list({name:name})
         if(enablePatient.length==0){return reject('No hay registro de ese Paciente')}
@@ -16,7 +16,7 @@ function addAppointment(name,cellphone,doctor,specialty,dateTime,branch){//patie
         if(enableDoctor[0].characteristic=="eliminado"){ return reject('Terapeuta inhabilitado')}
         if(enableDoctor[0].specialty!=specialty){return reject(`Lic. ${doctor} no atiende el servicio de ${specialty}`)}
         //_________________ checking availability ____________________________
-        const appointments = await store.list({dateTime,specialty})
+        const appointments = await store.list({date,time,specialty})
         let taken = appointments.some(function(element){return element.characteristic != "eliminado"})
         if(taken){return reject('Fecha ocupada')}
         //_________________ adding patient and sessions to doctor ____________
@@ -28,9 +28,9 @@ function addAppointment(name,cellphone,doctor,specialty,dateTime,branch){//patie
             storeDoctor.updateSessions(enableDoctor[0]._id,index,"add")
         }
         //____________________________________________________________________
-        const appointment = {name,cellphone,doctor,specialty,dateTime,branch,complete: false,characteristic:"reservado"};
-        store.add(appointment);
-        resolve(appointment);
+        const appointment = {name,cellphone,doctor,specialty,date,time,branch,complete: false,characteristic:"reservado"};
+        const appointmentSaved = await store.add(appointment);
+        resolve({_id: appointmentSaved._id});
     } )
 }
 function getAppointments(filter,rol){

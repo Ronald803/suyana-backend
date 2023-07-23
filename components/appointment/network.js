@@ -16,8 +16,8 @@ router.get('/',validationJwtRol(),(req,res)=>{
     })
 })
 router.post('/',validationJwtRol(),(req,res)=>{
-    const {name,cellphone,doctor,specialty,dateTime,branch} = req.body
-    controller.addAppointment(name,cellphone,doctor,specialty,dateTime,branch)
+    const {name,cellphone,doctor,specialty,date,time,branch} = req.body
+    controller.addAppointment(name,cellphone,doctor,specialty,date,time,branch)
      .then((appointment)=>{
          responseFunc.success(req,res,"Cita médica añadida correctamente",appointment,201)
      })

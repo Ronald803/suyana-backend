@@ -1,7 +1,8 @@
 const Model = require('./model')
-function add (appointment){
+async function add (appointment){
     const myAppointment = new Model(appointment)
-    myAppointment.save();
+    const newAppointment = await myAppointment.save();
+    return newAppointment
 }
 async function list(filter){
     const appointments = await Model.find(filter);

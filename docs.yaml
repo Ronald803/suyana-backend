@@ -100,7 +100,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/BodyPatientPost'
+              $ref: '#/components/schemas/BodyAppointmentPost'
       responses:
         201:
           description: (Ok) The new patient has been saved correctly
@@ -240,6 +240,18 @@ components:
         message:
           type: string
           example: Paciente añadido correctamente
+        body:
+          type: object
+          properties:
+            _id:
+              type: string
+              example: 64b322f0c70f905b656e58e1
+    AppointmentCreatedSuccessfully:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Cita añadida correctamente
         body:
           type: object
           properties:

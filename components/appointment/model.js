@@ -19,7 +19,11 @@ const mySchema = new Schema({
         type: String,
         required: true
     },
-    dateTime:{
+    date:{
+        type: String,
+        required: true
+    },
+    time:{
         type: String,
         required: true
     },
