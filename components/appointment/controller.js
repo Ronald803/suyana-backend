@@ -1,6 +1,7 @@
 const store = require('./store')
 const storeDoctor = require('../doctor/store')
 const storePatient = require('../patient/store')
+const timeTranslator = require('../../helpers/timeTranslator')
 //const validate = require('../../helpers/validate')
 
 function addAppointment(name,cellphone,doctor,specialty,date,time,branch){//patient,date,schedule,specialty,doctor){
@@ -15,8 +16,10 @@ function addAppointment(name,cellphone,doctor,specialty,date,time,branch){//pati
         if(enableDoctor.length==0){return reject('No hay registro de ese terapeuta')}
         if(enableDoctor[0].characteristic=="eliminado"){ return reject('Terapeuta inhabilitado')}
         if(enableDoctor[0].specialty!=specialty){return reject(`Lic. ${doctor} no atiende el servicio de ${specialty}`)}
+        // ________________ translating times ________________________________
+        const timeTranslated = timeTranslator.timeToNumber(time);
         //_________________ checking availability ____________________________
-        const appointments = await store.list({date,time,specialty})
+        const appointments = await store.list({date,time:timeTranslated,specialty})
         let taken = appointments.some(function(element){return element.characteristic != "eliminado"})
         if(taken){return reject('Fecha ocupada')}
         //_________________ adding patient and sessions to doctor ____________
@@ -28,7 +31,7 @@ function addAppointment(name,cellphone,doctor,specialty,date,time,branch){//pati
             storeDoctor.updateSessions(enableDoctor[0]._id,index,"add")
         }
         //____________________________________________________________________
-        const appointment = {name,cellphone,doctor,specialty,date,time,branch,complete: false,characteristic:"reservado"};
+        const appointment = {name,cellphone,doctor,specialty,date,time:timeTranslated,branch,complete: false,characteristic:"reservado"};
         const appointmentSaved = await store.add(appointment);
         resolve({_id: appointmentSaved._id});
     } )

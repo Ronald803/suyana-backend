@@ -24,7 +24,7 @@ const mySchema = new Schema({
         required: true
     },
     time:{
-        type: String,
+        type: Number,
         required: true
     },
     branch: {

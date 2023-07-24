@@ -4,6 +4,8 @@ const controller        = require('./controller')
 const responseFunc      = require('../../network/responseFunc')
 const {validationJwtRol}= require('../../middlewares/validationJwtRol') 
 
+//08:00 a 21:00
+
 router.get('/',validationJwtRol(),(req,res)=>{
     const rol = req.user.rol;
     //console.log({rol});
