@@ -4,11 +4,11 @@ const storePatient = require('../patient/store')
 const timeTranslator = require('../../helpers/timeTranslator')
 //const validate = require('../../helpers/validate')
 
-function addAppointment(name,cellphone,doctor,specialty,date,time,branch){//patient,date,schedule,specialty,doctor){
+function addAppointment(patient,doctor,specialty,start,end,branch){
     return new Promise( async(resolve,reject)=>{
-        if(!name || !cellphone || !doctor || !specialty|| !date|| !time || !branch){return reject('Datos incompletos')} 
+        if(!patient || !doctor || !specialty|| !start || !end || !branch){return reject('Datos incompletos')}
         //_________________ checking patient information _____________________
-        const enablePatient = await storePatient.list({name:name})
+        const enablePatient = await storePatient.list({name:patient})
         if(enablePatient.length==0){return reject('No hay registro de ese Paciente')}
         if(enablePatient[0].characteristic=="eliminado"){ return reject('Paciente inhabilitado')}
         //_________________ checking doctor information ______________________
@@ -16,22 +16,12 @@ function addAppointment(name,cellphone,doctor,specialty,date,time,branch){//pati
         if(enableDoctor.length==0){return reject('No hay registro de ese terapeuta')}
         if(enableDoctor[0].characteristic=="eliminado"){ return reject('Terapeuta inhabilitado')}
         if(enableDoctor[0].specialty!=specialty){return reject(`Lic. ${doctor} no atiende el servicio de ${specialty}`)}
-        // ________________ translating times ________________________________
-        const timeTranslated = timeTranslator.timeToNumber(time);
         //_________________ checking availability ____________________________
-        const appointments = await store.list({date,time:timeTranslated,specialty})
-        let taken = appointments.some(function(element){return element.characteristic != "eliminado"})
-        if(taken){return reject('Fecha ocupada')}
-        //_________________ adding patient and sessions to doctor ____________
-        const index = enableDoctor[0].patients.findIndex(element=>{ return element.name==name })
-        if(index==-1){ 
-            const object = {name: name, sessions: 1};
-            storeDoctor.addPatients(enableDoctor[0]._id,object)    
-        } else {
-            storeDoctor.updateSessions(enableDoctor[0]._id,index,"add")
-        }
+        /**
+         * TODO: CHECK AVAILABILITY
+         */
         //____________________________________________________________________
-        const appointment = {name,cellphone,doctor,specialty,date,time:timeTranslated,branch,complete: false,characteristic:"reservado"};
+        const appointment = {patient,doctor,specialty,start,end,branch};
         const appointmentSaved = await store.add(appointment);
         resolve({_id: appointmentSaved._id});
     } )
@@ -49,7 +39,7 @@ function getAppointments(filter,rol){
             if(element.characteristic!=="eliminado"){
                 arrayOfAppointments.push(element)
             }
-        }) 
+        })
         resolve(arrayOfAppointments);
     })
 }

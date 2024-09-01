@@ -2,13 +2,10 @@ const express           = require('express');
 const router            = express.Router();
 const controller        = require('./controller')
 const responseFunc      = require('../../network/responseFunc')
-const {validationJwtRol}= require('../../middlewares/validationJwtRol') 
-
-//08:00 a 21:00
+const {validationJwtRol}= require('../../middlewares/validationJwtRol')
 
 router.get('/',validationJwtRol(),(req,res)=>{
     const rol = req.user.rol;
-    //console.log({rol});
     controller.getAppointments(req.query,rol)
     .then( (appointments)=>{
         responseFunc.success(req,res,appointments.length,appointments,200)
@@ -18,8 +15,8 @@ router.get('/',validationJwtRol(),(req,res)=>{
     })
 })
 router.post('/',validationJwtRol(),(req,res)=>{
-    const {name,cellphone,doctor,specialty,date,time,branch} = req.body
-    controller.addAppointment(name,cellphone,doctor,specialty,date,time,branch)
+    const {patient,doctor,specialty,start,end,branch} = req.body
+    controller.addAppointment(patient,doctor,specialty,start,end,branch)
      .then((appointment)=>{
          responseFunc.success(req,res,"Cita médica añadida correctamente",appointment,201)
      })
@@ -43,9 +40,9 @@ router.delete('/:id',validationJwtRol(),(req,res)=>{
         } )
         .catch( e=>{
             responseFunc.error(req,res,500,e)
-        }) 
-    
-    
+        })
+
+
 })
 
 module.exports = router;
