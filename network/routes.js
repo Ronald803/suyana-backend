@@ -1,16 +1,18 @@
-const appointment = require('../components/appointment/network')
-const patient = require('../components/patient/network')
-const staff = require('../components/doctor/network')
-const auth = require('../components/auth/network')
+const appointmentNetwork = require('../components/appointment/network');
+const patientNetwork = require('../components/patient/network');
+const staffNetwork = require('../components/doctor/network');
+const authNetwork = require('../components/auth/network');
+const specialtyNetwork = require('../components/specialty/specialty.network');
 
-const routes = function(server){
-    server.use('/api/appointment',appointment);
-    server.use('/api/patient',patient);
-    server.use('/api/staff',staff);
-    server.use('/api/auth', auth)
-    server.use('/api/specialty',()=>{
-        console.log('esta es una petición a especialidad')
-    })
-}
+const routes = function (server) {
+  server.use('/api/appointment', appointmentNetwork);
+  server.use('/api/patient', patientNetwork);
+  server.use('/api/staff', staffNetwork);
+  server.use('/api/auth', authNetwork);
+  server.use('/api/specialty', specialtyNetwork);
+  server.use('/api/specialty', () => {
+    console.log('esta es una petición a especialidad');
+  });
+};
 
-module.exports = routes
+module.exports = routes;
