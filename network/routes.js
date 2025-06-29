@@ -1,4 +1,4 @@
-const appointmentNetwork = require('../components/appointment/network');
+const appointmentNetwork = require('../components/appointment/appointment.network');
 const patientNetwork = require('../components/patient/network');
 const staffNetwork = require('../components/doctor/network');
 const authNetwork = require('../components/auth/network');
