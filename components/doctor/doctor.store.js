@@ -5,8 +5,8 @@ function add(doctor) {
   const doctorSaved = newDoctor.save();
   return doctorSaved;
 }
-async function list(filter) {
-  const doctors = await DoctorModel.find(filter).populate('specialty');
+async function list(filter, exclude = '') {
+  const doctors = await DoctorModel.find(filter, exclude).populate('specialty');
   return doctors;
 }
 

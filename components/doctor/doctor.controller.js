@@ -20,8 +20,8 @@ const addDoctor = async (newDoctor) => {
   return doctorSaved;
 };
 
-const getDoctors = async () => {
-  const doctors = await doctorStore.list();
+const getDoctors = async (filter) => {
+  const doctors = await doctorStore.list(filter, '-password');
   return doctors;
 };
 
