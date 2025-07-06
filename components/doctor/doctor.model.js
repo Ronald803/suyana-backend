@@ -7,7 +7,7 @@ const mySchema = new Schema({
     type: String,
     required: true,
   },
-  specialtyId: {
+  specialty: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Specialty',
     required: [true, 'Specialty Id is required'],
@@ -31,6 +31,7 @@ const mySchema = new Schema({
   password: {
     type: String,
     required: true,
+    select: false,
   },
   rol: {
     type: String,

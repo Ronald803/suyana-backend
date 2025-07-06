@@ -7,17 +7,23 @@ const { validationJwtRol } = require('../../middlewares/validationJwtRol');
 router.get('/', validationJwtRol(), async (req, res) => {
   try {
     const response = await doctorController.getDoctors();
-    responseFunc.success(req, res, response, response, 200);
+    responseFunc.success(
+      req,
+      res,
+      `${response.length} doctor(s) found`,
+      response,
+      200,
+    );
   } catch (error) {
-    responseFunc.error(req, res, 500, error);
+    responseFunc.error(req, res, 500, error.message);
   }
 });
 router.post('/', async (req, res) => {
   try {
     const response = await doctorController.addDoctor(req.body);
-    responseFunc.success(req, res, response, response, 200);
+    responseFunc.success(req, res, 'New doctor saved', response, 200);
   } catch (error) {
-    responseFunc.error(req, res, 400, e);
+    responseFunc.error(req, res, 400, error.message);
   }
 });
 

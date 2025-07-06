@@ -2,8 +2,8 @@ const bcryptjs = require('bcryptjs');
 const doctorStore = require('./doctor.store');
 
 const addDoctor = async (newDoctor) => {
-  const { name, specialtyId, phone, address, email, password } = newDoctor;
-  if (!name || !specialtyId || !phone || !address || !email || !password) {
+  const { name, specialty, phone, address, email, password } = newDoctor;
+  if (!name || !specialty || !phone || !address || !email || !password) {
     throw new Error('Datos incompletos');
   }
   //___________________encrypting password________________
@@ -11,11 +11,7 @@ const addDoctor = async (newDoctor) => {
   const encryptPassword = bcryptjs.hashSync(password, salt);
 
   const doctor = {
-    name,
-    specialtyId,
-    phone,
-    address,
-    email,
+    ...newDoctor,
     password: encryptPassword,
     status: 'active',
     rol: 'doctor',
