@@ -1,7 +1,7 @@
 const patientStore = require('./patient.store');
 
 const addPatient = async (newPatient) => {
-  const { name, birthday, phone, address, diagnosis, tutorName } = newPatient;
+  let { name, birthday, phone, address, diagnosis, tutorName } = newPatient;
   if (!name || !birthday || !phone || !address || !tutorName) {
     throw new Error('Datos incompletos');
   }
