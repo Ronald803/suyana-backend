@@ -9,7 +9,7 @@ router.get('/', validationJwtRol(), async (req, res) => {
     const response = await appointmentController.getAppointments();
     responseFunc.success(req, res, response.length, response, 200);
   } catch (error) {
-    responseFunc.error(req, res, 500, error);
+    responseFunc.error(req, res, 500, error.message);
   }
 });
 router.post('/', validationJwtRol(), async (req, res) => {
@@ -17,40 +17,8 @@ router.post('/', validationJwtRol(), async (req, res) => {
     const response = await appointmentController.addAppointment(req.body);
     responseFunc.success(req, res, response.length, response, 200);
   } catch (error) {
-    responseFunc.error(req, res, 400, e);
+    responseFunc.error(req, res, 400, error.message);
   }
 });
-// router.put('/:id', validationJwtRol(), (req, res) => {
-//   controller
-//     .updateAppointment(req.params.id, req.body)
-//     .then((updatedAppointment) => {
-//       responseFunc.success(
-//         req,
-//         res,
-//         'Cita médica actualizada correctamente',
-//         updatedAppointment,
-//         200,
-//       );
-//     })
-//     .catch((e) => {
-//       responseFunc.error(req, res, 500, e);
-//     });
-// });
-// router.delete('/:id', validationJwtRol(), (req, res) => {
-//   controller
-//     .deleteAppointment(req.params.id)
-//     .then((deletedAppointment) => {
-//       responseFunc.success(
-//         req,
-//         res,
-//         'Cita médica eliminada correctamente',
-//         deletedAppointment,
-//         200,
-//       );
-//     })
-//     .catch((e) => {
-//       responseFunc.error(req, res, 500, e);
-//     });
-// });
 
 module.exports = router;

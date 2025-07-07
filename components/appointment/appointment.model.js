@@ -3,20 +3,15 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const mySchema = new Schema({
-  patientId: {
+  patient: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Patients',
+    ref: 'Patient',
     required: [true, 'Patient Id is required'],
   },
-  doctorId: {
+  doctor: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Doctors',
+    ref: 'Doctor',
     required: [true, 'Doctor Id is required'],
-  },
-  specialtyId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Specialty',
-    required: [true, 'Specialty Id is required'],
   },
   day: {
     type: String,
