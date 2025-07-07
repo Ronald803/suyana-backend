@@ -21,8 +21,8 @@ const mySchema = new Schema({
     type: String,
     required: true,
   },
-  endHour: {
-    type: String,
+  duration: {
+    type: Number,
     required: true,
   },
 });

@@ -1,15 +1,16 @@
 const appointmentStore = require('./appointment.store');
+const appointmentUtils = require('./appointments.utils');
 
 const addAppointment = async (newAppointment) => {
-  const { patient, doctor, startHour, endHour, day } = newAppointment;
-  if (!patient || !doctor || !startHour || !endHour || !day) {
+  const { patient, doctor, startHour, duration, day } = newAppointment;
+  if (!patient || !doctor || !startHour || !duration || !day) {
     throw new Error('Datos incompletos');
   }
   const appointment = {
     patient,
     doctor,
     startHour,
-    endHour,
+    duration,
     day,
   };
   const appointmentSaved = await appointmentStore.add(appointment);
@@ -21,7 +22,14 @@ const getAppointments = async (filter) => {
   return appointments;
 };
 
+const getSchedule = async () => {
+  const appointments = await appointmentStore.list();
+  const schedule = appointmentUtils.shapeSchedule(appointments);
+  return schedule;
+};
+
 module.exports = {
   addAppointment,
   getAppointments,
+  getSchedule,
 };

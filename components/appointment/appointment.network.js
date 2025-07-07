@@ -4,6 +4,15 @@ const appointmentController = require('./appointment.controller');
 const responseFunc = require('../../network/responseFunc');
 const { validationJwtRol } = require('../../middlewares/validationJwtRol');
 
+router.get('/schedule', validationJwtRol(), async (req, res) => {
+  try {
+    const response = await appointmentController.getSchedule();
+    responseFunc.success(req, res, 'Schedule', response, 200);
+  } catch (error) {
+    responseFunc.error(req, res, 500, error.message);
+  }
+});
+
 router.get('/', validationJwtRol(), async (req, res) => {
   try {
     const response = await appointmentController.getAppointments();
