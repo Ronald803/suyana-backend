@@ -29,5 +29,14 @@ router.post('/', validationJwtRol(), async (req, res) => {
     responseFunc.error(req, res, 400, error.message);
   }
 });
-
+router.delete('/:appointmentId', validationJwtRol(), async (req, res) => {
+  try {
+    const response = await appointmentController.removeAppointment(
+      req.params.appointmentId,
+    );
+    responseFunc.success(req, res, 'Appointment deleted', response, 200);
+  } catch (error) {
+    responseFunc.error(req, res, 400, error.message);
+  }
+});
 module.exports = router;

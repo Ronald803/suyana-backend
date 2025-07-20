@@ -16,4 +16,10 @@ async function list(filter) {
   return appointments;
 }
 
-module.exports = { add, list };
+async function remove(appointmentId) {
+  const deletedAppointment =
+    await AppointmentModel.findByIdAndDelete(appointmentId);
+  return deletedAppointment;
+}
+
+module.exports = { add, list, remove };

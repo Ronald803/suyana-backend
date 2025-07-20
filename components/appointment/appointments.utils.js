@@ -203,13 +203,16 @@ const shapeSchedule = (appointments) => {
     const patientName = appointment.patient.name;
     const doctorId = appointment.doctor._id;
     const doctorName = appointment.doctor.name;
-
+    const appointmentId = appointment._id;
+    const startEndHour = generateStartEndHours(startHour);
     schedule[startHour][day][specialtyId] = {
       specialtyName,
       patientId,
       patientName,
       doctorId,
       doctorName,
+      appointmentId,
+      startEndHour,
     };
     if (duration === 1) {
       const newStartHour = addOneHourDuration(startHour);
@@ -219,6 +222,8 @@ const shapeSchedule = (appointments) => {
         patientName,
         doctorId,
         doctorName,
+        appointmentId,
+        startEndHour,
       };
     }
   });
@@ -234,6 +239,18 @@ const addOneHourDuration = (startHour) => {
     newStartHour = parseInt(hour[0]) + 1 + ':00';
   }
   return newStartHour.length === 4 ? '0' + newStartHour : newStartHour;
+};
+
+const generateStartEndHours = (startHour) => {
+  const hour = startHour.split(':');
+  let endHour = parseInt(hour[0]) + 1;
+  return (
+    startHour +
+    ' - ' +
+    (endHour.length === 4 ? '0' + endHour : endHour) +
+    ':' +
+    hour[1]
+  );
 };
 
 module.exports = { shapeSchedule };
